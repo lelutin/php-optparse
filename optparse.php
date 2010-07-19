@@ -3,7 +3,7 @@
  * Option parser.
  *
  * Easily parse command line arguments in PHP. This parser has the same
- * interface as the python "optparse" package.
+ * interface as the Python "optparse" module.
  *
  * Example usage:
  *   $parser = new OptionParser();
@@ -12,7 +12,6 @@
  */
 if (! defined("__OPTPARSE_PHP") ) {
 define("__OPTPARSE_PHP", "");
-require_once("utils.php");
 
 define("NO_SUCH_OPT_ERROR", 1);
 define("WRONG_VALUE_COUNT_ERROR", 2);
@@ -28,6 +27,7 @@ function _no_translation($string) { return $string; }
 
 // Define this constant before inclusion, or redefine it with the translation
 // function name.
+// The function should take a string in and return its translated form.
 if (! defined("_OPTPARSE_T") ) {
     define("_OPTPARSE_T", "_no_translation");
 }
@@ -76,7 +76,7 @@ function _array_pop_elem(&$array, $key, $default=null) {
  *
  * This class has one difference from its Python counterpart: it has no
  * "option_list" argument. This argument is currently marked as deprecated in
- * python's optparse module in favor of using the add_option method.
+ * Python's optparse module in favor of using the add_option method.
  *
  * @author Gabriel Filion <lelutin@gmail.com>
  */
@@ -225,10 +225,11 @@ class OptionParser {
     }
 
     /**
-     * Verify if an option is present in the parser
+     * Verify presence of an option in the parser.
      *
-     * Given an option string, verify if one of the parser's options uses this
-     * string. It is a convenient way to verify if an option was already added.
+     * Given an option string, find out if one of the parser's options uses this
+     * string. It is a convenient way to verify that an option was already
+     * added.
      *
      * @return boolean: true if option is present, false if not
      * @author Gabriel Filion <lelutin@gmail.com>
@@ -244,11 +245,11 @@ class OptionParser {
     }
 
     /**
-     * Remove the option corresponding to a string
+     * Remove the option that is mapped to the given string.
      *
-     * Remove the option that uses the given string. If the option uses other
-     * strings of text, those strings become invalid (unused). If the text does
-     * not correspond to an option, a OutOfBoundsException is thrown.
+     * If the option uses other strings of text, those strings become invalid
+     * (unused). If the text does not correspond to an option, a
+     * OutOfBoundsException is thrown.
      *
      * @return void
      * @author Gabriel Filion <lelutin@gmail.com>
@@ -280,7 +281,7 @@ class OptionParser {
     }
 
     /**
-     * Set the usage text
+     * Set the usage text.
      *
      * @return void
      * @author Gabriel Filion <lelutin@gmail.com>
@@ -290,7 +291,7 @@ class OptionParser {
     }
 
     /**
-     * Retrieve usage string
+     * Retrieve the usage string.
      *
      * @return String
      * @author Gabriel Filion <lelutin@gmail.com>
@@ -309,10 +310,10 @@ class OptionParser {
     }
 
     /**
-     * Print usage
+     * Print usage.
      *
-     * Print usage message. Default output stream is stdout. To change it, pass
-     * another stream as argument.
+     * Default output stream is stdout. To change it, pass another stream as
+     * argument.
      *
      * @return void
      * @author Gabriel Filion <lelutin@gmail.com>
@@ -322,10 +323,10 @@ class OptionParser {
     }
 
     /**
-     * Print the help text
+     * Print the whole help message as seen with option -h.
      *
-     * Print the whole help message as seen with option -h. Default output
-     * stream is stdout. To change it, pass another stream as argument.
+     * Default output stream is stdout. To change it, pass another stream as
+     * argument.
      *
      * @return void
      * @author Gabriel Filion <lelutin@gmail.com>
@@ -420,11 +421,12 @@ class OptionParser {
 
         return join("", $result);
     }
+
     /**
-     * Print version
+     * Print version information message.
      *
-     * Print version information message. Default output stream is stdout. To
-     * change it, pass another stream as argument.
+     * Default output stream is stdout. To change it, pass another stream as
+     * argument.
      *
      * @return void
      * @author Gabriel Filion <lelutin@gmail.com>
@@ -441,9 +443,9 @@ class OptionParser {
     }
 
     /**
-     * Retrieve the program name as shown by usage
+     * Retrieve the program name as shown by usage.
      *
-     * @return String
+     * @return string
      * @author Gabriel Filion <lelutin@gmail.com>
      **/
     public function get_prog_name() {
@@ -451,9 +453,9 @@ class OptionParser {
     }
 
     /**
-     * Retrieve the description
+     * Retrieve the description.
      *
-     * @return String
+     * @return string
      * @author Gabriel Filion <lelutin@gmail.com>
      **/
     public function get_description() {
@@ -461,9 +463,9 @@ class OptionParser {
     }
 
     /**
-     * Retrieve the version tag
+     * Retrieve the version tag.
      *
-     * @return String
+     * @return string
      * @author Gabriel Filion <lelutin@gmail.com>
      **/
     public function get_version() {
@@ -495,7 +497,7 @@ class OptionParser {
     }
 
     /**
-     * Parse command line arguments
+     * Parse command line arguments.
      *
      * Given an array of arguments, parse them and create an object containing
      * expected values and positional arguments.
@@ -552,7 +554,7 @@ class OptionParser {
     }
 
     /**
-     * Set the option conflict handler
+     * Set the option conflict handler.
      *
      * Conflict handler can be one of "error" or "resolve".
      *
@@ -582,7 +584,7 @@ class OptionParser {
     }
 
     /**
-     * Set default value for only one option
+     * Set default value for only one option.
      *
      * Default values must have a key that corresponds to the "dest" argument of
      * an option.
@@ -595,7 +597,7 @@ class OptionParser {
     }
 
     /**
-     * Set default values for multiple destinations
+     * Set default values for multiple destinations.
      *
      * Default values must have a key that corresponds to the "dest" argument of
      * an option. Calling this function is the preferred way of setting default
@@ -610,7 +612,7 @@ class OptionParser {
     }
 
     /**
-     * Exit program with an error message and code
+     * Exit program with an error message and return code.
      *
      * $message should already be translated when given to this function.
      *
@@ -722,7 +724,7 @@ class OptionParser {
     }
 
     /**
-     * Ask an option to process information
+     * Ask an option to process information.
      *
      * Process an option. If it throws an OptionValueError, exit with an error
      * message.
@@ -778,10 +780,9 @@ class OptionParser {
     }
 
     /**
-     * Find an option but exit if it is not known
+     * Find an option with the text from command line.
      *
-     * Find an option with the text from command line. If the option cannot be
-     * found, exit with and error.
+     * If the option cannot be found, exit with an error.
      *
      * @return Option object
      * @author Gabriel Filion <lelutin@gmail.com>
@@ -801,13 +802,13 @@ class OptionParser {
     }
 
     /**
-     * Resolve option conflicts intelligently
+     * Resolve option conflicts intelligently.
      *
      * This method is the resolver for option conflict_handler="resolve". It
      * tries to resolve conflicts automatically. It disables an option string
      * so that the last option added that uses this string has precedence.
      *
-     * If an option sees its last string get disabled, it removes it entirely.
+     * If an option sees its last string disabled, it is removed entirely.
      * Options that get removed cannot be automatically re-enabled later.
      *
      * @return void
@@ -826,10 +827,10 @@ class OptionParser {
     }
 
     /**
-     * Re-enable an option string
+     * Re-enable an option string.
      *
      * When the conflict handler is set to "resolve", some strings may be
-     * disabled. This method tries to reenable a string.
+     * disabled. This method tries to re-enable a string.
      *
      * @return void
      * @author Gabriel Filion <lelutin@gmail.com>
@@ -1041,7 +1042,7 @@ class Option {
     }
 
     /**
-     * Convert value to the requested type
+     * Convert value to the requested type.
      *
      * @return void
      * @author Gabriel Filion <lelutin@gmail.com>
@@ -1062,8 +1063,10 @@ class Option {
     }
 
     /**
-     * Check that a value is one of the specified choices. If the value is not
-     * a correct choice, raise an OptionValueError exception.
+     * Check that a value is one of the specified choices.
+     *
+     * If the value is not a correct choice, raise an OptionValueError
+     * exception.
      *
      * @return void
      * @author Gabriel Filion <lelutin@gmail.com>
@@ -1084,8 +1087,9 @@ class Option {
     }
 
     /**
-     * Convert a value to a builtin type. If the conversion fails, raise an
-     * OptionValueError exception.
+     * Convert a value to a builtin type.
+     *
+     * If the conversion fails, raise an OptionValueError exception.
      *
      * @return void
      * @author Gabriel Filion <lelutin@gmail.com>
@@ -1122,8 +1126,6 @@ class Option {
     }
 
     /**
-     * Take an action
-     *
      * Based on the requested action, do the right thing.
      *
      * @return void
@@ -1187,7 +1189,7 @@ class Option {
     }
 
     /**
-     * Disable an option string (e.g. --option) from the option
+     * Disable an option string (e.g. --option) from the option.
      *
      * @return void
      * @author Gabriel Filion <lelutin@gmail.com>
@@ -1210,7 +1212,7 @@ class Option {
     }
 
     /**
-     * Update callback_args with callback_kwargs
+     * Update callback_args with callback_kwargs.
      *
      * Values already defined in callback_args will get overridden
      *
@@ -1242,7 +1244,7 @@ class Option {
     }
 
     /**
-     * Set some sensible default values depending on the action that was chosen
+     * Set some sensible default values depending on the action that was chosen.
      *
      * Some actions don't require one or another attribute. Set those to
      * sensible defaults in order to have everything behave correctly.
@@ -1660,7 +1662,7 @@ class IndentedHelpFormatter {
     }
 
     /**
-     * Format text in a paragraph ..
+     * Format text in a paragraph.
      *
      * @return string
      * @author Gabriel Filion <lelutin@gmail.com>
@@ -1687,7 +1689,7 @@ class OptionConflictError extends Exception {
 /**
  * Exception on superfluous or conflicting arguments
  *
- * Exception raised when unknown options are passed to Option's constructor or
+ * Raised when unknown options are passed to Option's constructor or
  * when conflitcting settings are passed to the Option constructor.
  **/
 class OptionError extends Exception {

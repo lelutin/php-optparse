@@ -6,7 +6,7 @@ be as similar as possible to that of its Python counterpart.
 How to use
 ==========
 
-Simply drop the optparse.php file in you project directory and include() it.
+Simply drop the optparse.php file in your project directory and include() it.
 Then, create an OptionParser object and add options with the add_option()
 method. When all options are set up, parse the options with the parse_args()
 method. The object returned from parse_args will contain all the values from
