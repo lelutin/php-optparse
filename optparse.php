@@ -1009,7 +1009,7 @@ class Option {
         }
 
         // Make sure all the relevant information was given
-        $this->_verify_settings_dependancies($settings);
+        $this->_verify_settings_dependencies($settings);
     }
 
     /**
@@ -1300,13 +1300,13 @@ class Option {
      *
      * Some actions require the presence of other arguments to the Option
      * constructor. For example, actions that store a value should always be
-     * used with a destination. Verify those dependancies and throw an
+     * used with a destination. Verify those dependencies and throw an
      * exception if things are not right.
      *
      * @return void
      * @author Gabriel Filion <lelutin@gmail.com>
      **/
-    private function _verify_settings_dependancies() {
+    private function _verify_settings_dependencies() {
         if ( ! in_array($this->action, $this->CONST_ACTIONS) ) {
             if ( $this->const !== NO_DEFAULT ) {
                 $vals = array("action" => $this->action);
