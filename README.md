@@ -28,6 +28,14 @@ Example:
 
     // here $options->gah contains 4
 
+Running the tests
+=================
+
+The 't' directory contains unit tests for classes contained in the PHPOptparse
+library. To run the tests, use phpunit in the following manner:
+
+    phpunit OptionTest
+
 License
 =======
 
