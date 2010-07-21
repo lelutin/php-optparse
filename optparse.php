@@ -1371,6 +1371,7 @@ class Option {
         }
         else {
             if (! $this->nargs === Null) {
+                //XXX: ??
             }
         }
 
@@ -1381,8 +1382,7 @@ class Option {
                 );
                 throw new OptionError($msg);
             }
-
-            if ( ! function_exists($this->callback) ) {
+            else if ( ! function_exists($this->callback) ) {
                 $vals = array("function" => $this->callback);
                 $msg = _translate(
                     "callback not callable: %(function)s",
@@ -1406,7 +1406,7 @@ class Option {
             if ($this->callback !== Null) {
                 $vals = array("function" => $this->callback);
                 $msg = _translate(
-                    "'callback' supplied (%(function)s) for non-callback option",
+                    "'callback' supplied (%(function)s) for non-callback action",
                     $vals
                 );
                 throw new OptionError($msg);
@@ -1414,7 +1414,7 @@ class Option {
 
             if ($this->callback_args !== Null) {
                 $msg = _translate(
-                    "'callback_args' supplied for non-callback option"
+                    "'callback_args' supplied for non-callback action"
                 );
                 throw new OptionError($msg);
             }
