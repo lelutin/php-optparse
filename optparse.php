@@ -614,7 +614,7 @@ class OptionParser {
     /**
      * Exit program with an error message and return code.
      *
-     * $message should already be translated when given to this function.
+     * $text should already be translated when given to this function.
      *
      * @return void
      * @author Gabriel Filion <lelutin@gmail.com>
@@ -626,7 +626,7 @@ class OptionParser {
 
         $l10n_error = _translate("error");
 
-        fprintf(STDERR, "$prog: $l10n_error: $code\n");
+        fprintf(STDERR, "$prog: $l10n_error: $text\n");
         exit($code);
     }
 
