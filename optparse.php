@@ -626,7 +626,7 @@ class OptionParser {
 
         $l10n_error = _translate("error");
 
-        fprintf(STDERR, "$prog: $l10n_error: $message\n");
+        fprintf(STDERR, "$prog: $l10n_error: $code\n");
         exit($code);
     }
 
@@ -1464,8 +1464,6 @@ class Option {
 
 class IndentedHelpFormatter {
 	
-	protected $current_intent = 0;
-	
     public function IndentedHelpFormatter($indent_increment=2,
                                           $max_help_position=24,
                                           $width=Null,
@@ -1564,7 +1562,7 @@ class IndentedHelpFormatter {
      * @author Gabriel Filion <lelutin@gmail.com>
      **/
     public function format_heading($text) {
-        $indent = str_repeat(" ", $this->current_intent);
+        $indent = str_repeat(" ", $this->current_indent);
         return $indent. $text. ":\n";
     }
 
