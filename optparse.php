@@ -1724,4 +1724,3 @@ class OptionError extends Exception {
 class OptionValueError extends Exception { }
 
 } // __OPTPARSE_PHP
-?>
