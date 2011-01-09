@@ -1561,7 +1561,7 @@ class IndentedHelpFormatter {
      * @author Gabriel Filion <lelutin@gmail.com>
      **/
     public function format_heading($text) {
-        $indent = str_repeat(" ", $this->current_intent);
+        $indent = str_repeat(" ", $this->current_indent);
         return $indent. $text. ":\n";
     }
 
