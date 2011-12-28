@@ -619,7 +619,7 @@ class OptionParser {
      * @return void
      * @author Gabriel Filion <lelutin@gmail.com>
      **/
-    public function error($text, $code) {
+    public function error($text, $code = 1) {
         $this->print_usage(STDERR);
 
         $prog = basename($_SERVER['SCRIPT_FILENAME']);
@@ -1634,7 +1634,7 @@ class IndentedHelpFormatter {
         $this->dedent();
         $this->help_position = min($max_len + 2, $this->max_help_position);
         $this->help_width = $this->width - $this->help_position;
-        print "help_position: $this->help_position\nhelp_width: $this->width\n";
+        //print "help_position: $this->help_position\nhelp_width: $this->width\n";
     }
 
     /**
