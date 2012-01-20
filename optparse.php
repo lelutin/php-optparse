@@ -1472,8 +1472,9 @@ class IndentedHelpFormatter {
 
         $this->indent_increment = $indent_increment;
         if (! $width) {
-            $size = $this->terminal_size();
-            $width = $size[0];
+            // $size = $this->terminal_size();
+            // $width = $size[0];
+            $width = 80;
         }
         $this->width = $width;
 
@@ -1481,18 +1482,12 @@ class IndentedHelpFormatter {
     }
 
     public function terminal_size() {
-        if (PHP_OS == "Linux") {
-            function terminal_size() {
-                $dims = explode(" ", shell_exec("stty size"));
-                array_map("intval", $dims);
-                return array_reverse($dims);
-            }
-        }
-        else {
-            function terminal_size() {
-                return array(80,24);
-            }
-        }
+        if (PHP_OS != "Linux")
+            return array(80,24);
+
+        $dims = explode(" ", shell_exec("stty size"));
+        array_map("intval", $dims);
+        return array_reverse($dims);
     }
 
     /**
@@ -1587,27 +1582,34 @@ class IndentedHelpFormatter {
      * @author Gabriel Filion <lelutin@gmail.com>
      **/
     public function format_option($option) {
-        //TODO translate this in PHP
-        /*result = []
-        opts = self.option_strings[option]
-        opt_width = self.help_position - self.current_indent - 2
-        if len(opts) > opt_width:
-            opts = "%*s%s\n" % (self.current_indent, "", opts)
-            indent_first = self.help_position
-        else:                       # start help on same line as opts
-            opts = "%*s%-*s  " % (self.current_indent, "", opt_width, opts)
-            indent_first = 0
-        result.append(opts)
-        if option.help:
-            help_text = self.expand_default(option)
-            help_lines = textwrap.wrap(help_text, self.help_width)
-            result.append("%*s%s\n" % (indent_first, "", help_lines[0]))
-            result.extend(["%*s%s\n" % (self.help_position, "", line)
-                           for line in help_lines[1:]])
-        elif opts[-1] != "\n":
-            result.append("\n")
-        return "".join(result)*/
-        return $option->__str__(). "\n";
+        $result = array();
+
+        $opts = $this->option_strings[$option->__hash__()];
+        $opt_width = $this->help_position - $this->current_indent - 2;
+        if (strlen($opts) > $opt_width)
+        {
+            $opts = str_pad("", $this->current_indent) . $opts . "\n";
+            $indent_first = $this->help_position;
+        }
+        else
+        {
+            $opts = str_pad("", $this->current_indent) . str_pad($opts, $opt_width + 2);
+            $indent_first = 0;
+        }
+        $result[] = $opts;
+
+        if ($option->help) {
+            // $help_text = $this->expand_default($option);
+            $help_text = $option->help;
+            $help_lines = explode("\n", wordwrap($help_text, $this->help_width));
+            $result[] = str_pad("", $indent_first) . $help_lines[0] . "\n";
+            for ($i = 1; $i < count($help_lines); $i += 1)
+                $result[] = str_pad("", $this->help_position) . $help_lines[$i] . "\n";
+        }
+        else if (substr($opts, -1) != "\n") {
+            $result[] = "\n";
+        }
+        return implode("", $result);
     }
 
     /**
@@ -1624,41 +1626,27 @@ class IndentedHelpFormatter {
             $this->option_strings[$opt->__hash__()] = $strings;
             $max_len = max($max_len, strlen($strings) + $this->current_indent);
         }
-        /*self.indent()
-        for group in parser.option_groups:
-            for opt in group.option_list:
-                strings = self.format_option_strings(opt)
-                self.option_strings[opt] = strings
-                max_len = max(max_len, len(strings) + self.current_indent)
-        self.dedent()*/
         $this->dedent();
         $this->help_position = min($max_len + 2, $this->max_help_position);
         $this->help_width = $this->width - $this->help_position;
-        //print "help_position: $this->help_position\nhelp_width: $this->width\n";
     }
 
     /**
      * Return a comma-separated list of option strings & metavariables.
      **/
     public function format_option_strings($option) {
-        //TODO translate this
-        /*if option.takes_value():
-            metavar = option.metavar or option.dest.upper()
-            short_opts = [self._short_opt_fmt % (sopt, metavar)
-                          for sopt in option._short_opts]
-            long_opts = [self._long_opt_fmt % (lopt, metavar)
-                         for lopt in option._long_opts]
-        else:
-            short_opts = option._short_opts
-            long_opts = option._long_opts
+        $option_strings = array();
+        $metavar = $option->nargs > 0 ? $option->metavar : "";
 
-        if self.short_first:
-            opts = short_opts + long_opts
-        else:
-            opts = long_opts + short_opts
-
-        return ", ".join(opts)*/
-        return "";
+        foreach ($option->option_strings as $name) {
+            if (strlen($name) == 2)
+              $option_strings[] = $name . $metavar;
+            else if ($option->nargs > 0)
+              $option_strings[] = $name . "=" . $metavar;
+            else
+              $option_strings[] = $name;
+        }
+        return implode(", ", $option_strings);
     }
 
     /**
@@ -1668,6 +1656,7 @@ class IndentedHelpFormatter {
      * @author Gabriel Filion <lelutin@gmail.com>
      **/
     private function _format_text($text) {
+        return wordwrap($text, $this->width - $this->current_indent);
         //TODO implement
         return $text;
     }
