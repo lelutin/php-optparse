@@ -1657,7 +1657,6 @@ class IndentedHelpFormatter {
      **/
     private function _format_text($text) {
         return wordwrap($text, $this->width - $this->current_indent);
-        //TODO implement
         return $text;
     }
 }
