@@ -1463,6 +1463,7 @@ class Option {
 }
 
 class IndentedHelpFormatter {
+	
     public function IndentedHelpFormatter($indent_increment=2,
                                           $max_help_position=24,
                                           $width=Null,
