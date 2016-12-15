@@ -766,6 +766,10 @@ class OptionParser {
         // If only one value, set it directly as the value (not in an array)
         if ( $option->nargs == 1 ) {
             $value = $value[0];
+            // Treat the option as the same one until another dash (-) is found to specify we're looking at a new one.
+            while (is_array($rargs) && isset($rargs[0]) && is_string($rargs[0]) && $rargs[0][0] !== '-') {
+                $value .= ' '.array_shift($rargs);
+            }
         }
 
         try {
