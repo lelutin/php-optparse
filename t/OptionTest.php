@@ -3,7 +3,6 @@
  * Unit tests for the Option class
  *********************************/
 
-require_once "PHPUnit/Framework.php";
 require_once "../optparse.php";
 
 function create_Option($args) { $opt = new Option($args); }
@@ -134,6 +133,54 @@ class OptionTest extends PHPUnit_Framework_TestCase {
         $this->assertThrows("InvalidArgumentException", "create_Option", array(array()) );
         $this->assertThrows("InvalidArgumentException", "create_Option", array(array("-a", "nargs"=>-1)) );
         $this->assertThrows("OptionError", "create_Option", array(array("-a", "unknown"=>"something")) );
+    }
+
+    function test_OptionParser() {
+        $option_parser = new OptionParser();
+        $option_parser->add_option(array(
+            "-b", "--booh",
+            "dest" => "gah",
+            "metavar" => "<the thing>",
+            "type" => "int"
+        ));
+        $argv = ['/var/www/optparse.php', '-b', '4'];
+        $options = $option_parser->parse_args($argv);
+
+        $this->assertEquals( 4, $options->options['gah']);
+
+        $option_parser = new OptionParser();
+        
+        $options = [
+                    [
+                        '--action',
+                        'dest' => 'action',
+                        'default' => null,
+                        'help' => 'Either lock or unlock',
+                    ],
+                    [
+                        '--user',
+                        'dest' => 'user',
+                        'default' => null,
+                        'help' => 'User calling this file',
+                    ],
+                    [
+                        '--reason',
+                        'dest' => 'reason',
+                        'default' => null,
+                        'help' => 'Reason for locking deployments',
+                    ],
+                ];
+
+        foreach($options as $option) {
+            $option_parser->add_option($option);
+        }
+
+        $argv = ['/var/www/optparse.php', '--action', 'lock', '--reason', 'Bad', 'deploy', '--user', 'username'];
+        $options = $option_parser->parse_args($argv);
+
+        $this->assertEquals( 'Bad deploy', $options->options['reason']);
+        $this->assertEquals( 'username', $options->options['user']);
+        $this->assertEquals( 'lock', $options->options['action']);
     }
 }
 
