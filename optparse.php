@@ -84,7 +84,7 @@ class OptionParser {
 
     protected $standard_option_list = array();
 
-    function OptionParser($settings=array()) {
+    public function __construct($settings=array()) {
         $this->_positional = array();
         $this->option_list = $this->standard_option_list;
 
@@ -879,7 +879,7 @@ function OptionContainer_format_option_help($container, $formatter) {
  * arguments.
  **/
 class Values {
-    function Values($options, $positional) {
+    public function __construct($options, $positional) {
         $this->options = $options;
         $this->positional = $positional;
     }
@@ -929,7 +929,7 @@ class Option {
         "append_const"
     );
 
-    function Option($settings) {
+    public function __construct($settings) {
         $option_strings = array();
 
         // Get all option strings. They should be added without key in settings
@@ -1467,10 +1467,10 @@ class Option {
 }
 
 class IndentedHelpFormatter {
-    public function IndentedHelpFormatter($indent_increment=2,
-                                          $max_help_position=24,
-                                          $width=Null,
-                                          $short_first=true) {
+    public function __construct($indent_increment=2,
+                                $max_help_position=24,
+                                $width=Null,
+                                $short_first=true) {
         $this->option_strings = array();
         $this->current_indent = 0;
 
@@ -1672,7 +1672,7 @@ class IndentedHelpFormatter {
  * (e.g. "--option") that is already used by a previously added option.
  **/
 class OptionConflictError extends Exception {
-    function OptionConflictError($name) {
+    public function __construct($name) {
         $msg = _translate("Duplicate definition of option \"$name\"");
         parent::__construct($msg);
     }
@@ -1685,7 +1685,7 @@ class OptionConflictError extends Exception {
  * when conflitcting settings are passed to the Option constructor.
  **/
 class OptionError extends Exception {
-    function OptionError($arguments) {
+    public function __construct($arguments) {
         if ( is_array($arguments) ) {
             $msg = $this->unknown_settings($arguments);
         }
