@@ -1,4 +1,4 @@
 # Ref: https://help.github.com/articles/about-codeowners/
 
-# Study Tools  Owner
-*                                            @quizlet/study-tools-paint 
+# Repository Owner
+*                                            @quizlet/sg-engineering-sre
